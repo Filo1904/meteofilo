@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Meteo Web App</title>
+</head> 
+<body>
+    <div class="navbar">
+        <div class="left-navbar">
+            <img src="images/sole-sorridente.png" alt="">
+            <p class="title">MeteoFilo</p>
+        </div>
+
+        <div class="right-navbar">
+            <div class="city-search-container">
+                <input
+                    type="text"
+                    name="city"
+                    class="city-search"
+                    id="city-search"
+                    placeholder="🔍 Cerca una città..."
+                    aria-label="Cerca una città">
+
+                <div class="city-results" id="city-results" hidden>
+                </div>
+            </div>
+
+            <button id="my-position-button" class="my-position-button" type="button">
+                ⊙ La mia posizione
+            </button>
+        </div>
+    </div>
+    <section class="welcome" id="welcome" aria-labelledby="welcome-title">
+        <img class="welcome-icon" src="images/weather/partly-cloudy-day.svg" alt="">
+        <h1 id="welcome-title">Benvenuto su MeteoFilo</h1>
+        <p>Che tempo fa da te?</p>
+        <p>Cerca una città nella barra in alto oppure premi “La mia posizione” per scoprire il meteo dove ti trovi.</p>
+        <p class="welcome-status" id="welcome-status" role="status"></p>
+    </section>
+    <div class="result-box" id="result-box" hidden>
+        <div class="location-header">
+            <p class="result-title" id="result-title"></p>
+            <p class="result-subtitle" id="result-subtitle"></p>
+        </div>
+        <div class="first-row">
+            <div class="current-weather-card">
+                <div class="current-weather-card-top">
+                    <img id="current-weather-icon" src="https://cdn.meteocons.com/latest/svg/fill/clear-day.svg" alt="">
+                    <div class="vertical-separator"></div>
+                    <div class="current-temperature">
+                        <p id="current-temperature-text"></p>
+                    </div>
+                    <div class="current-base-info">
+                        <p class="current-weather-code">Parzialmente nuvoloso</p>
+                        <p class="current-apparent-temperature" id="current-apparent-temperature"></p>
+                        <p class="current-temperature-range" id="current-temperature-range"></p>
+                    </div>
+                </div>
+                <div class="current-weather-card-update-time">
+                    <p id="weather-update-time">
+                        ⟳ Aggiornato alle 14:30
+                    </p>
+                </div>
+            </div>
+            <div class="weather-details">
+                <div class="weather-detail-card wind-card">
+                    <img src="images/weather/wind.svg" alt="">
+                    <div class="detail-content">
+                        <p class="detail-label">Vento</p>
+                        <p class="detail-value" id="wind-speed"></p>
+                        <p class="detail-secondary" id="wind-direction"></p>
+                    </div>
+                </div>
+
+                <div class="weather-detail-card humidity-card">
+                    <img src="images/weather/humidity.svg" alt="">
+                    <div class="detail-content">
+                        <p class="detail-label">Umidità</p>
+                        <p class="detail-value" id="humidity"></p>
+                    </div>
+                </div>
+
+                <div class="weather-detail-card rain-card">
+                    <img src="images/weather/raindrops.svg" alt="">
+                    <div class="detail-content">
+                        <p class="detail-label">Prob. pioggia</p>
+                        <p class="detail-value" id="rain-probability"></p>
+                    </div>
+                </div>
+
+                <div class="weather-detail-card uv-card">
+                    <img src="images/weather/uv-index.svg" alt="">
+
+                    <div class="detail-content">
+                        <p class="detail-label">Indice UV</p>
+                        <p class="detail-value" id="uv-index"></p>
+                        <span class="uv-badge" id="uv-description"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="hourly-forecast" aria-labelledby="hourly-title">
+            <h2 id="hourly-title">
+                <svg class="hourly-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 7v5l3 2"></path>
+                </svg>
+                Previsioni orarie
+            </h2>
+            <p id="hourly-message" class="hourly-message" hidden>Previsioni orarie non disponibili.</p>
+            <div class="hourly-scroll" tabindex="0" role="region" aria-label="Previsioni orarie: scorri per vedere tutte le ore">
+                <ul class="hourly-list" id="hourly-list"></ul>
+            </div>
+        </section>
+        <div class="forecast-bottom-row">
+            <section class="daily-forecast" aria-labelledby="daily-title">
+                <h2 id="daily-title">
+                    <svg class="forecast-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+                        <path d="M16 3v4M8 3v4M3 11h18"></path>
+                    </svg>
+                    Prossimi 7 giorni
+                </h2>
+                <p class="forecast-message" id="daily-message" hidden>Previsioni giornaliere non disponibili.</p>
+                <ul class="daily-list" id="daily-list" aria-label="Previsioni giornaliere con probabilità di precipitazioni, minima e massima"></ul>
+            </section>
+            <section class="sun-card" aria-labelledby="sun-title">
+                <h2 id="sun-title">
+                    <svg class="forecast-section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"></path>
+                    </svg>
+                    Sole e luce
+                </h2>
+                <svg class="sun-graphic" viewBox="0 0 400 185" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="sun-daylight-glow" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#ffe99a" stop-opacity="0.3"></stop>
+                            <stop offset="100%" stop-color="#ffe99a" stop-opacity="0"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path d="M40 160A160 120 0 0 1 360 160Z" fill="url(#sun-daylight-glow)"></path>
+                    <path class="sun-arc" d="M40 160A160 120 0 0 1 360 160" fill="none"></path>
+                    <path class="sun-horizon" d="M15 160h370"></path>
+                    <circle class="sun-endpoint" cx="40" cy="160" r="5"></circle>
+                    <circle class="sun-endpoint" cx="360" cy="160" r="5"></circle>
+                    <image href="images/weather/clear-day.svg" x="160" y="0" width="80" height="80"></image>
+                </svg>
+                <dl class="sun-metrics">
+                    <div>
+                        <dt>Alba</dt>
+                        <dd id="sunrise-time">—</dd>
+                    </div>
+                    <div>
+                        <dt>Ore di luce</dt>
+                        <dd class="daylight-badge" id="daylight-duration">—</dd>
+                    </div>
+                    <div>
+                        <dt>Tramonto</dt>
+                        <dd id="sunset-time">—</dd>
+                    </div>
+                </dl>
+                <p class="forecast-message" id="sun-message" hidden>Dati solari non disponibili.</p>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
